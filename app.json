@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "frmsMobile",
+    "slug": "frmsMobile",
+    "version": "1.0.0",
+    "icon": "./assets/fireStation.png",
+    "splash": {
+      "image": "./assets/fireStation.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.frmsmobile",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCgZbnDHFJ58t7u7YJmGTCHqbVsuyUyTZQ"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+
+      "package": "com.frmsmobile",
+      "config" :{
+        "googleMaps":{
+          "apiKey":"KEY"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
