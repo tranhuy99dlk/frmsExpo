@@ -46,7 +46,7 @@ const DestinationScreen = ({ navigation }) => {
                 size={30}
                 source={require("../../assets/blankProfilePic.jpg")}
               />
-              <Text style={{ marginLeft: 5 }}>For Someone</Text>
+              <Text style={{ marginLeft: 5 }}>Bạn</Text>
               <Icon
                 type="material-community"
                 name="chevron-down"
@@ -60,7 +60,7 @@ const DestinationScreen = ({ navigation }) => {
       {destination === false && (
         <GooglePlacesAutocomplete
           nearbyPlacesAPI="GooglePlacesSearch"
-          placeholder="From..."
+          placeholder="Từ ..."
           listViewDisplayed="auto"
           debounce={400}
           currentLocation={true}

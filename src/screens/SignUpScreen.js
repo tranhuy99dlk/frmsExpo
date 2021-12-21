@@ -12,6 +12,7 @@ import Header from "../components/Header";
 import { Formik } from "formik";
 import { Icon, Button } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
+import { StatusBar } from "expo-status-bar";
 
 const initialValues = {
   phone_number: "",
@@ -45,6 +46,11 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        translucent
+        barStyle="light-content"
+        backgroundColor="rgba(255, 140, 82,1)"
+      />
       <Header title="Tạo tài khoản" type="arrow-left" navigation={navigation} />
       <View style={styles.view1}>
         <Text style={styles.text1}>Đăng ký</Text>
@@ -307,7 +313,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 5,
     marginTop: 20,
-    height: 40
+    height: 40,
   },
 
   view15: { alignItems: "center", justifyContent: "center", marginTop: 10 },
@@ -385,6 +391,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingTop: 10,
     paddingHorizontal: 10,
-    color: colors.grey2 
+    color: colors.grey2,
   },
 });

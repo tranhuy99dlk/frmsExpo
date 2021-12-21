@@ -16,11 +16,63 @@ import HomeHeader from "../components/HomeHeader";
 import { colors, parameters } from "../global/styles";
 import { stationAround } from "../global/data";
 import { mapStyle } from "../global/mapStyle";
+import axios from "axios";
+import { token } from "./token";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const HomeScreen = ({ navigation }) => {
   const [latlng, setLatLng] = useState({});
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  let text = "Waiting..";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+  const sendData = async () => {
+    try {
+      const URL = "http://localhost:5000";
+      const formData = new FormData();
+      formData.append("lat", location?.coords?.latitude);
+      formData.append("lng", location?.coords?.longitude);
+      const res = await axios.post(
+        `${URL}/location`,
+        {
+          lat: location?.coords?.latitude,
+          lng: location?.coords?.longitude,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res) {
+        console.log(res);
+      }
+    } catch (error) {
+      console.log("err", error);
+    }
+  };
 
   const checkPermission = async () => {
     const hasPermission = await Location.requestForegroundPermissionsAsync();
@@ -57,6 +109,8 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* <Text>{text}</Text> */}
+
       <StatusBar
         translucent
         barStyle="light-content"
@@ -73,11 +127,7 @@ const HomeScreen = ({ navigation }) => {
               <Text style={styles.text2}>
                 Fire and Rescue Management System
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("HomeScreen");
-                }}
-              >
+              <TouchableOpacity onPress={sendData}>
                 <View style={styles.button1}>
                   <Text style={styles.button1Text}>FRMS</Text>
                 </View>
@@ -104,7 +154,7 @@ const HomeScreen = ({ navigation }) => {
                 <TouchableOpacity
                   style={styles.button2}
                   onPress={() => {
-                    navigation.navigate("ImagePicker");
+                    navigation.navigate("ImageScreen");
                   }}
                 >
                   <Image
@@ -112,7 +162,7 @@ const HomeScreen = ({ navigation }) => {
                     style={styles.image2}
                   />
 
-                  <Text style={styles.title}>Send Image</Text>
+                  <Text style={styles.title}>Hình ảnh</Text>
                 </TouchableOpacity>
               </View>
 
@@ -120,7 +170,7 @@ const HomeScreen = ({ navigation }) => {
                 <TouchableOpacity
                   style={styles.button2}
                   onPress={() => {
-                    navigation.navigate("CameraComponent");
+                    navigation.navigate("VideoCall");
                   }}
                 >
                   <Image
@@ -141,7 +191,7 @@ const HomeScreen = ({ navigation }) => {
                 navigation.navigate("RequestScreen");
               }}
             >
-              <Text style={styles.text3}> Fire Station? </Text>
+              <Text style={styles.text3}> Trạm cứu hoả? </Text>
             </TouchableOpacity>
             <View style={styles.view4}>
               <Icon
@@ -171,10 +221,10 @@ const HomeScreen = ({ navigation }) => {
               </View>
               <View>
                 <Text style={{ fontSize: 18, color: colors.black }}>
-                  65 Tran Tan Moi
+                  65 Trần Tấn Mới
                 </Text>
                 <Text style={{ color: colors.grey3 }}>
-                  Hoa Cuong Bac, Hai Chau, Da Nang
+                  Hoà Cường Bắc, Hải Châu, Đà Nẵng
                 </Text>
               </View>
             </View>
@@ -200,9 +250,9 @@ const HomeScreen = ({ navigation }) => {
               </View>
               <View>
                 <Text style={{ fontSize: 18, color: colors.black }}>
-                  114 Nguyen Hoang
+                  114 Nguyễn Hoàng
                 </Text>
-                <Text style={{ color: colors.grey3 }}>Hai Chau, Da Nang</Text>
+                <Text style={{ color: colors.grey3 }}>Hải Châu, Đà Nẵng</Text>
               </View>
             </View>
             <View>

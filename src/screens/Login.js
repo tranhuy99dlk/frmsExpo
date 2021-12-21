@@ -1,109 +1,75 @@
-import React, { Component } from "react";
+import axios from "axios";
+import React, { Component, useState } from "react";
 import {
+  Platform,
   StyleSheet,
-  TouchableOpacity,
   Text,
+  Alert,
   View,
+  TouchableOpacity,
   TextInput,
-  Dimensions,
   Image,
+  Dimensions,
 } from "react-native";
-const { height, width } = Dimensions.get("window");
 import { colors, parameters } from "../global/styles";
+const { height, width } = Dimensions.get("window");
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      nof: "",
-    };
-  }
-  onLogin = () => {
-    if (
-      this.state.email == "1" &&
-      this.state.password == "1"
-    ) {
-      this.props.navigation.navigate("HomeScreen");
-    } else {
-      this.setState({
-        nof: "Email hoặc mật khẩu không đúng",
+export default function Login({ navigation }) {
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    checkLogin: 0,
+  });
+  const onSubmit = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/login", {
+        email: user.username,
+        password: user.password,
       });
+      if (res) return navigation.navigate("HomeScreen");
+    } catch (error) {
+      alert("Email hoặc mật khẩu không đúng");
     }
   };
-  onSignUp = () => {
-    this.props.navigation.navigate("SignUpScreen");
+  const onSignUp = async () => {
+    navigation.navigate("SignUpScreen");
   };
-  render() {
-    return (
-      <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/fireStation.png")}
-        />
-        <TextInput
-          style={{
-            width: 300,
-            height: 40,
-            borderRadius: 25,
-            fontSize: 16,
-            paddingLeft: 15,
-            paddingTop: -10,
-            backgroundColor: "#ffff",
-            color: "black",
-            marginHorizontal: 25,
-            marginTop: 10,
-            borderWidth: 1,
-            borderColor: "#bbb",
-          }}
-          onChangeText={(email) => this.setState({ email })}
-          placeholder={"Email"}
-          placeholderTextColor={"grey"}
-          underlineColorAndroid="transparent"
-        ></TextInput>
-        <TextInput
-          style={{
-            width: 300,
-            height: 40,
-            borderRadius: 25,
-            fontSize: 16,
-            paddingLeft: 15,
-            paddingTop: -10,
-            backgroundColor: "#ffff",
-            color: "black",
-            marginHorizontal: 25,
-            marginTop: 10,
-            borderWidth: 1,
-            borderColor: "#bbb",
-          }}
-          onChangeText={(password) => this.setState({ password })}
-          placeholder={"Password"}
-          placeholderTextColor={"grey"}
-          underlineColorAndroid="transparent"
-          secureTextEntry={true}
-        ></TextInput>
-        <Text style={{ color: "red" }}>{this.state.nof}</Text>
 
-        <TouchableOpacity
-          style={styles.btnLogin}
-          onPress={() => this.onLogin()}
-        >
-          <Text style={styles.textlogin}>Đăng Nhập</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.btnLogin}
-          onPress={() => this.onSignUp()}
-        >
-          <Text style={styles.textlogin}>Đăng Ký</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+
+  return (
+    <View style={styles.container}>
+      <Image
+        style={styles.image}
+        source={require("../../assets/fireStation.png")}
+      />
+      <TextInput
+        placeholder="Email"
+        placeholderTextColor="black"
+        underlineColorAndroid="transparent"
+        style={styles.txtInput}
+        onChangeText={(username) => setUser({ ...user, username: username })}
+      />
+      <TextInput
+        placeholder="Mật khẩu"
+        underlineColorAndroid="transparent"
+        placeholderTextColor="black"
+        secureTextEntry={true}
+        style={styles.txtInput}
+        onChangeText={(password) => setUser({ ...user, password: password })}
+      />
+      <TouchableOpacity onPress={onSubmit} style={styles.btnLogin}>
+        <Text style={styles.txtLogin}>Đăng nhập</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onSignUp} style={styles.btnLogin}>
+        <Text style={styles.txtLogin}>Đăng ký</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
-export default Login;
+const DEVICE_WIDTH = Dimensions.get("window").width;
+const DEVICE_HEIGHT = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(255, 140, 82,1)",
@@ -117,12 +83,19 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginBottom: 50,
   },
-  textlogin: {
-    textAlign: "center",
-    color: "#ffff",
-    fontWeight: "bold",
-    fontSize: 20,
-
+  txtInput: {
+    width: 300,
+    height: 40,
+    borderRadius: 25,
+    fontSize: 16,
+    paddingLeft: 15,
+    paddingTop: -10,
+    backgroundColor: "#ffff",
+    color: "black",
+    marginHorizontal: 25,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: "#bbb",
   },
   btnLogin: {
     width: 300,
@@ -134,5 +107,10 @@ const styles = StyleSheet.create({
     borderColor: "#ffff",
     justifyContent: "center",
   },
-
+  txtLogin: {
+    textAlign: "center",
+    color: "#ffff",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
 });

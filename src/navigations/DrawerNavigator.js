@@ -3,6 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { HomeStack } from "./StackNavigators";
 import { Icon } from "react-native-elements";
 import { colors } from "../global/styles";
+import { ProfileStack } from "./ProfileNavigators";
 
 const Drawer = createDrawerNavigator();
 
@@ -26,7 +27,23 @@ export default function DrawerNavigator() {
           headerShown: false,
         }}
       />
-      
+      <Drawer.Screen
+        name="ProfileStack"
+        component={ProfileStack}
+        options={{
+          title: "Profile",
+          drawerIcon: ({ focussed, size }) => (
+            <Icon
+              type="material-community"
+              name="face-profile"
+              color={focussed ? "#7cc" : colors.grey2}
+              size={size}
+            />
+          ),
+
+          headerShown: false,
+        }}
+      />
     </Drawer.Navigator>
   );
 }

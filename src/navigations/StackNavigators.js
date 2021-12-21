@@ -3,16 +3,18 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import RequestScreen from "../screens/RequestScreen";
 import DestinationScreen from "../screens/DestinationScreen";
-import ImagePicker from "../screens/ImagePicker";
+import ImageScreen from "../screens/ImageScreen";
 import Login from "../screens/Login";
 import SignUpScreen from "../screens/SignUpScreen";
+import VideoCall from "../screens/VideoCall";
+import CameraScreen from "../screens/CameraScreen";
 
 const Home = createNativeStackNavigator();
 
 export function HomeStack() {
   return (
     <Home.Navigator>
-      <Home.Screen
+      {/* <Home.Screen
         name="Login"
         component={Login}
         options={{ headerShown: false }}
@@ -21,15 +23,15 @@ export function HomeStack() {
         name="SignUpScreen"
         component={SignUpScreen}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Home.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Home.Screen
-        name="ImagePicker"
-        component={ImagePicker}
+        name="ImageScreen"
+        component={ImageScreen}
         options={{ headerShown: false }}
       />
       <Home.Screen
@@ -42,7 +44,16 @@ export function HomeStack() {
         component={DestinationScreen}
         options={{ headerShown: false }}
       />
-
+      <Home.Screen
+        name="VideoCall"
+        component={VideoCall}
+        options={{ headerShown: false }}
+      />
+      <Home.Screen
+        name="CameraScreen"
+        component={CameraScreen}
+        options={{ headerShown: false }}
+      />
     </Home.Navigator>
   );
 }

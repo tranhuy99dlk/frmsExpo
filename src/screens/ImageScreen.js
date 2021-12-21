@@ -5,14 +5,19 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Dimensions, Icon
+  Dimensions,
+  Icon,
 } from "react-native";
 import { colors, parameters } from "../global/styles";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
-import Header from "../components/Header";
+import CameraComponent from "../components/CameraComponent";
+import { StatusBar } from "expo-status-bar";
+import { Header } from "react-native-elements";
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
-export default function ImageComponent() {
+export default function ImageScreen(navigation) {
   const [hasPermission, setHasPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [useCamera, setUseCamera] = useState(false);
@@ -30,7 +35,7 @@ export default function ImageComponent() {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text>Không kết nối với camera</Text>;
   }
 
   const takePicture = async () => {
@@ -63,33 +68,28 @@ export default function ImageComponent() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 100,
-      }}
-    >
+    <View style={styles.containerr}>
+      <StatusBar
+        translucent
+        barStyle="light-content"
+        backgroundColor="rgba(255, 140, 82,1)"
+      />
+      <Header
+        leftComponent={() => (
+          <Feather name="arrow-left" size={32} color="#ffff" />
+        )}
+        backgroundColor="rgba(255, 140, 82,1)"
+        centerComponent={{
+          text: "HÌNH ẢNH",
+          style: { color: "white", fontWeight: "bold" },
+        }}
+        rightComponent={() => (
+          <FontAwesome name="search" size={24} color="#ffff" />
+        )}
+      />
       {useCamera ? (
-        <View>
-          {/* <Camera style={styles.camera} type={type} ref={cameraRef}>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  setType(
-                    type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back
-                  );
-                }}
-              >
-                <Text style={styles.text}> Flip </Text>
-              </TouchableOpacity>
-            </View>
-          </Camera> */}
+        <View style={{ width: "100%", height: "100%" }}>
+          <CameraComponent />
         </View>
       ) : (
         <>
@@ -110,7 +110,7 @@ export default function ImageComponent() {
                   console.log("response", JSON.stringify(r));
                 }}
               >
-                <Text style={styles.text}> PICK PICTURE </Text>
+                <Text style={styles.text}> THƯ VIỆN </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button]}
@@ -119,7 +119,7 @@ export default function ImageComponent() {
                   setUseCamera(true);
                 }}
               >
-                <Text style={styles.text}> PICK CAMERA </Text>
+                <Text style={styles.text}> CAMERA </Text>
               </TouchableOpacity>
             </View>
             <View style={{ width: "100%", alignItems: "center" }}>
@@ -129,7 +129,7 @@ export default function ImageComponent() {
                   style={{
                     width: 200,
                     height: 200,
-                    backgroundColor: 'grey',
+                    backgroundColor: "grey",
                     marginTop: 200,
                   }}
                 />
@@ -180,5 +180,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
     fontWeight: "bold",
+  },
+  containerr: {
+    flex: 1,
+    backgroundColor: colors.white,
+    paddingBottom: 30,
+    paddingTop: parameters.statusBarHeight,
   },
 });

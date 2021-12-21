@@ -56,7 +56,7 @@ export default function RequestScreen({ navigation }) {
               size={30}
               source={require("../../assets/blankProfilePic.jpg")}
             />
-            <Text style={{ marginLeft: 5 }}>For Someone</Text>
+            <Text style={{ marginLeft: 5 }}>Bạn</Text>
             <Icon
               type="material-community"
               name="chevron-down"
@@ -77,7 +77,7 @@ export default function RequestScreen({ navigation }) {
               onPress={() => navigation.navigate("DestinationScreen")}
             >
               <View style={styles.view6}>
-                <Text style={styles.text1}>From where</Text>
+                <Text style={styles.text1}>Từ ...</Text>
               </View>
             </TouchableOpacity>
             <View style={styles.view7}>
